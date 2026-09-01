@@ -15,8 +15,9 @@ Number of search results requested per page.
 
 .PARAMETER MaxResults
 Maximum number of identities to retrieve while counting. If the dataset exceeds this value,
-the count is capped and a warning is emitted. Maximum allowed value is 2147483646
-([int]::MaxValue - 1) so the script can safely request one additional record to detect truncation.
+the count is capped and a warning is emitted. Maximum allowed value is
+[int]::MaxValue - 1 (2147483646) so the script can safely request one additional
+record to detect truncation.
 #>
 [CmdletBinding()]
 param(
@@ -70,7 +71,7 @@ $searchJson = @"
 "@
 
 $search = ConvertFrom-JsonToSearch -Json $searchJson
-$queryLimit = [int]([long]$MaxResults + 1)
+$queryLimit = $MaxResults + 1
 $results = Invoke-PaginateSearch -Search $search -Increment $PageSize -Limit $queryLimit
 
 $retrievedCount = @($results).Count
