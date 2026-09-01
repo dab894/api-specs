@@ -52,6 +52,7 @@ $searchJson = @"
   "query": {
     "query": "correlated:true"
   },
+  "sort": ["id"],
   "filters": {
     "created": {
       "type": "RANGE",
