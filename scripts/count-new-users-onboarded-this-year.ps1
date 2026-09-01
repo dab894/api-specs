@@ -5,6 +5,7 @@ Counts identities created from the start of the current year through an as-of ti
 .DESCRIPTION
 Uses the SailPoint PowerShell SDK search APIs to query the identities index for records
 whose created timestamp is in the current calendar year and outputs the total count.
+The query targets correlated identities to represent onboarded users.
 
 .PARAMETER AsOf
 Upper bound timestamp for the calculation. Unspecified DateTime values are treated as UTC.
@@ -47,7 +48,7 @@ $searchJson = @"
 {
   "indices": ["identities"],
   "query": {
-    "query": "*"
+    "query": "correlated:true"
   },
   "filters": {
     "created": {
@@ -68,7 +69,7 @@ $searchJson = @"
 "@
 
 $search = ConvertFrom-JsonToSearch -Json $searchJson
-$queryLimit = $MaxResults + 1
+$queryLimit = [int]([long]$MaxResults + 1L)
 $results = Invoke-PaginateSearch -Search $search -Increment $PageSize -Limit $queryLimit
 
 $retrievedCount = @($results).Count
