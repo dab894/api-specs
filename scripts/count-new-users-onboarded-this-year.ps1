@@ -69,7 +69,7 @@ $searchJson = @"
 "@
 
 $search = ConvertFrom-JsonToSearch -Json $searchJson
-$queryLimit = [int]([long]$MaxResults + 1L)
+$queryLimit = [int]([long]$MaxResults + 1)
 $results = Invoke-PaginateSearch -Search $search -Increment $PageSize -Limit $queryLimit
 
 $retrievedCount = @($results).Count
