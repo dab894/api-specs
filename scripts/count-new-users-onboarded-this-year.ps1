@@ -66,12 +66,14 @@ $searchJson = @"
 "@
 
 $search = ConvertFrom-JsonToSearch -Json $searchJson
-$results = Invoke-PaginateSearch -Search $search -Increment $PageSize -Limit $MaxResults
+$queryLimit = $MaxResults + 1
+$results = Invoke-PaginateSearch -Search $search -Increment $PageSize -Limit $queryLimit
 
-$newUserCount = @($results).Count
+$retrievedCount = @($results).Count
+$newUserCount = [Math]::Min($retrievedCount, $MaxResults)
 
-if ($newUserCount -ge $MaxResults) {
-    Write-Warning "Returned count reached MaxResults=$MaxResults. Increase MaxResults if your tenant has more new users this year."
+if ($retrievedCount -gt $MaxResults) {
+    Write-Warning "Returned count exceeded MaxResults=$MaxResults. Increase MaxResults to retrieve an exact count."
 }
 
 [pscustomobject]@{
