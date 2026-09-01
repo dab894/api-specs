@@ -19,7 +19,9 @@ the count is capped and a warning is emitted.
 [CmdletBinding()]
 param(
     [datetime]$AsOf = (Get-Date).ToUniversalTime(),
+    [ValidateRange(1, [int]::MaxValue)]
     [int]$PageSize = 250,
+    [ValidateRange(1, 2147483646)]
     [int]$MaxResults = 200000
 )
 
